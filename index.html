@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A3A5C">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Padel Ani">
+<title>Padel Ani</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,sans-serif;background:#F0F4F8;color:#1A2733;min-height:100vh}
+.hdr{background:#1A3A5C;color:#fff;padding:16px 16px 12px;text-align:center;position:sticky;top:0;z-index:99;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.hdr h1{font-size:19px;font-weight:700}
+.hdr p{font-size:11px;opacity:.7;margin-top:2px}
+.tabs{display:flex;background:#1A3A5C;padding:0 6px 12px;gap:3px;overflow-x:auto}
+.tab{flex:1;min-width:50px;padding:7px 2px;border-radius:20px;border:none;font-size:10px;font-weight:600;cursor:pointer;background:rgba(255,255,255,.15);color:rgba(255,255,255,.7);-webkit-appearance:none;white-space:nowrap}
+.tab.on{background:#fff;color:#1A3A5C}
+.pg{padding:14px;max-width:480px;margin:0 auto;padding-bottom:30px}
+.prog-wrap{background:#fff;border-radius:14px;padding:13px;margin-bottom:11px;box-shadow:0 2px 10px rgba(0,0,0,.09)}
+.prog-lbl{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:#1A3A5C;margin-bottom:7px}
+.prog-bar{height:8px;background:#E8EDF2;border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#2E75B6,#276836);transition:width .4s}
+.card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.09);margin-bottom:11px;overflow:hidden}
+.rhdr{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#1A3A5C;color:#fff;flex-wrap:wrap;gap:4px}
+.rnum{font-size:14px;font-weight:700}
+.rtime{font-size:11px;opacity:.75;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:10px}
+.rbadge{font-size:11px;background:#FFF2CC;color:#8B5E00;padding:2px 8px;border-radius:20px;font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.court{padding:11px 13px}
+.court.sep{border-bottom:1px solid #EEF2F7}
+.clbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.clbl.b{color:#2E75B6}.clbl.g{color:#276836}.clbl.v{color:#7B3FA0}
+.mrow{display:flex;align-items:center;gap:5px}
+.team{flex:1;text-align:center;font-size:12px;font-weight:600;line-height:1.4;color:#1A2733}
+.team.wb{color:#2E75B6;font-weight:800}.team.wg{color:#276836;font-weight:800}.team.wv{color:#7B3FA0;font-weight:800}
+.wbadge{display:block;font-size:9px;font-weight:700;margin-top:1px}
+.wbadge.b{color:#2E75B6}.wbadge.g{color:#276836}.wbadge.v{color:#7B3FA0}
+.sarea{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.sbtn{width:36px;height:36px;border-radius:50%;border:2px solid #E8EDF2;font-size:14px;font-weight:700;cursor:pointer;background:#fff;color:#6B7A8D;-webkit-appearance:none}
+.sbtn.ab{background:#2E75B6;color:#fff;border-color:#2E75B6}
+.sbtn.ag{background:#276836;color:#fff;border-color:#276836}
+.sbtn.av{background:#7B3FA0;color:#fff;border-color:#7B3FA0}
+.stxt{font-size:11px;font-weight:800;min-width:20px;text-align:center;color:#1A3A5C}
+.score-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px;padding-top:9px;border-top:1px dashed #E8EDF2}
+.score-lbl{font-size:10px;color:#6B7A8D;font-weight:600;flex:1;text-align:center}
+.score-inp{width:44px;height:34px;border:2px solid #E8EDF2;border-radius:8px;text-align:center;font-size:16px;font-weight:700;color:#1A3A5C;background:#F8FAFC;-webkit-appearance:none}
+.score-inp:focus{outline:none;border-color:#2E75B6}
+.score-dash{font-size:18px;font-weight:700;color:#6B7A8D}
+.rank-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.09);overflow:hidden;margin-bottom:11px}
+.rank-hdr{background:#1A3A5C;color:#fff;padding:11px 15px;font-size:14px;font-weight:700}
+.rank-row{display:flex;align-items:center;padding:10px 15px;border-bottom:1px solid #EEF2F7;gap:9px}
+.rank-row:last-child{border-bottom:none}
+.bubble{width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.b1{background:#FFD700;color:#7A5800}.b2{background:#C0C0C0;color:#444}.b3{background:#CD7F32;color:#fff}.bx{background:#E8EDF2;color:#6B7A8D;font-size:11px}
+.rinfo{flex:1}.rname{font-size:14px;font-weight:600}.rsub{font-size:10px;color:#6B7A8D;margin-top:1px}
+.rbar{height:4px;background:#E8EDF2;border-radius:3px;margin-top:5px;overflow:hidden}
+.rbar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#2E75B6,#5BA4E0);transition:width .5s}
+.rwins{text-align:right}.rnum-big{font-size:20px;font-weight:800;color:#1A3A5C;line-height:1}.rlbl{font-size:10px;color:#6B7A8D}
+.cruces-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.09);overflow:hidden;margin-bottom:11px}
+.cruces-hdr{background:#1A3A5C;color:#fff;padding:11px 15px;font-size:14px;font-weight:700}
+.cruce-row{padding:10px 14px;border-bottom:1px solid #EEF2F7}
+.cruce-row:last-child{border-bottom:none}
+.cruce-round{font-size:10px;font-weight:700;text-transform:uppercase;color:#6B7A8D;margin-bottom:5px}
+.cruce-match{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.cruce-court{font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;flex-shrink:0}
+.cruce-court.b{background:#D6E8FA;color:#2E75B6}.cruce-court.g{background:#D5F0E0;color:#276836}.cruce-court.v{background:#EDE0FF;color:#7B3FA0}
+.cruce-teams{font-size:12px;font-weight:600;color:#1A2733;flex:1}
+.cruce-rest{font-size:10px;color:#8B5E00;background:#FFF2CC;padding:2px 7px;border-radius:10px;margin-top:4px;display:inline-block}
+.cruce-result{font-size:11px;font-weight:700;flex-shrink:0}
+.section-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.09);margin-bottom:11px;overflow:hidden}
+.section-hdr{background:#1A3A5C;color:#fff;padding:10px 14px;font-size:13px;font-weight:700}
+.info-box{background:#EBF3FB;border-radius:10px;padding:10px 13px;margin-bottom:11px;font-size:11px;color:#1A3A5C;line-height:1.6}
+.ok-box{background:#D5F0E0;border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:#276836;line-height:1.5}
+.warn-box{background:#FFF2CC;border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:#8B5E00;line-height:1.5}
+.err-box{background:#FDECEA;border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:#C0392B;line-height:1.5}
+.apply-btn{width:100%;padding:13px;border-radius:14px;border:none;background:#1A3A5C;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;-webkit-appearance:none}
+.apply-btn.blue{background:#2E75B6}
+.apply-btn.green{background:#276836}
+.reset-btn{width:100%;padding:13px;border-radius:14px;border:2px solid #C0392B;background:#fff;color:#C0392B;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px;-webkit-appearance:none}
+.empty{text-align:center;padding:36px 20px;color:#6B7A8D}
+.champ{background:linear-gradient(135deg,#FFD700,#FFA500);padding:18px;text-align:center;border-radius:14px;margin-bottom:11px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+/* settings */
+.setting-row{display:flex;align-items:center;padding:13px 15px;border-bottom:1px solid #EEF2F7;gap:12px}
+.setting-row:last-child{border-bottom:none}
+.setting-label{flex:1}
+.setting-title{font-size:14px;font-weight:600;color:#1A2733}
+.setting-sub{font-size:11px;color:#6B7A8D;margin-top:2px}
+.stepper{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.step-btn{width:34px;height:34px;border-radius:50%;border:2px solid #E8EDF2;background:#fff;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1A3A5C;-webkit-appearance:none;line-height:1}
+.step-val{font-size:18px;font-weight:800;color:#1A3A5C;min-width:28px;text-align:center}
+.time-sel{height:36px;border:2px solid #E8EDF2;border-radius:8px;font-size:14px;font-weight:600;color:#1A3A5C;background:#F8FAFC;padding:0 8px;-webkit-appearance:none}
+.schedule-preview{background:#F8FAFC;border-radius:10px;padding:10px 12px;margin-top:4px;font-size:11px;color:#1A3A5C;line-height:1.7}
+/* jugadoras ABM */
+.player-row{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid #EEF2F7;gap:8px}
+.player-row:last-child{border-bottom:none}
+.player-num{width:24px;height:24px;border-radius:50%;background:#E8EDF2;color:#6B7A8D;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.player-name-inp{flex:1;height:34px;border:2px solid #E8EDF2;border-radius:8px;font-size:13px;font-weight:600;color:#1A3A5C;background:#F8FAFC;padding:0 8px;-webkit-appearance:none;min-width:0}
+.player-name-inp:focus{outline:none;border-color:#2E75B6}
+.pos-toggle{display:flex;gap:3px;flex-shrink:0}
+.pos-btn{padding:4px 6px;border-radius:7px;border:2px solid #E8EDF2;font-size:10px;font-weight:700;cursor:pointer;background:#fff;color:#6B7A8D;-webkit-appearance:none}
+.pos-btn.on-d{background:#D6E8FA;color:#2E75B6;border-color:#2E75B6}
+.pos-btn.on-r{background:#D5F0E0;color:#276836;border-color:#276836}
+.pos-btn.on-a{background:#EDE0FF;color:#7B3FA0;border-color:#7B3FA0}
+.del-btn{width:30px;height:30px;border-radius:50%;border:none;background:#FDECEA;color:#C0392B;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-appearance:none}
+.add-player-row{display:flex;align-items:center;gap:8px;padding:10px 14px}
+.add-inp{flex:1;height:36px;border:2px solid #2E75B6;border-radius:8px;font-size:13px;font-weight:600;color:#1A3A5C;background:#fff;padding:0 10px;-webkit-appearance:none}
+.add-inp:focus{outline:none}
+.add-btn{height:36px;padding:0 14px;border-radius:8px;border:none;background:#2E75B6;color:#fff;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;-webkit-appearance:none}
+/* parejas */
+.mode-toggle{display:flex;background:#E8EDF2;border-radius:12px;padding:3px;margin-bottom:14px;gap:3px}
+.mode-btn{flex:1;padding:9px 6px;border-radius:9px;border:none;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#6B7A8D;-webkit-appearance:none}
+.mode-btn.on{background:#fff;color:#1A3A5C;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.pair-row-m{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid #EEF2F7}
+.pair-row-m:last-child{border-bottom:none}
+.pair-num{width:24px;height:24px;border-radius:50%;background:#1A3A5C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.pair-sel{flex:1;height:34px;border:2px solid #E8EDF2;border-radius:8px;font-size:13px;font-weight:600;color:#1A3A5C;background:#F8FAFC;padding:0 8px;-webkit-appearance:none;min-width:0}
+
+.pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px}
+.pill-v{background:#D5F0E0;color:#276836}.pill-d{background:#FDECEA;color:#C0392B}
+.pill-s{background:#EBF3FB;color:#2E75B6}.pill-r{background:#FFF2CC;color:#8B5E00}
+.share-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:14px;border:none;background:#25D366;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;-webkit-appearance:none}
+.hist-row{padding:11px 14px;border-bottom:1px solid #EEF2F7}
+.hist-row:last-child{border-bottom:none}
+.hist-date{font-size:10px;color:#6B7A8D;font-weight:600;margin-bottom:5px}
+.hist-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px}
+.hist-1{background:#FFD700;color:#7A5800}.hist-2{background:#C0C0C0;color:#444}.hist-3{background:#CD7F32;color:#fff}
+.podio-wrap{border-radius:14px;margin-bottom:11px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.stat-row{display:flex;align-items:center;padding:10px 15px;border-bottom:1px solid #EEF2F7;gap:10px}
+.stat-row:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <h1>Padel Ani</h1>
+  <p id="hdr-sub">Cargando...</p>
+</div>
+<div class="tabs">
+  <button class="tab on"  id="t-fix"  onclick="showTab('fixture')">Fixture</button>
+  <button class="tab"     id="t-rank" onclick="showTab('ranking')">Ranking</button>
+  <button class="tab"     id="t-cruz" onclick="showTab('cruces')">Cruces</button>
+  <button class="tab"     id="t-par"  onclick="showTab('parejas')">Parejas</button>
+  <button class="tab"     id="t-jug"  onclick="showTab('jugadoras')">Jugadoras</button>
+  <button class="tab"     id="t-hist" onclick="showTab('historial')">Historial</button>
+  <button class="tab"     id="t-set"  onclick="showTab('settings')">Ajustes</button>
+</div>
+<div id="modal-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end" onclick="closeModal()">
+  <div style="background:#fff;width:100%;border-radius:20px 20px 0 0;padding-bottom:20px;max-height:60vh;overflow-y:auto" onclick="event.stopPropagation()">
+    <div style="padding:14px 16px;font-size:15px;font-weight:700;color:#1A3A5C;border-bottom:1px solid #EEF2F7;display:flex;justify-content:space-between;align-items:center">
+      <span>Elegir avatar</span>
+      <button style="font-size:22px;color:#6B7A8D;cursor:pointer;border:none;background:none;line-height:1" onclick="closeModal()">&#10005;</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:12px" id="emoji-grid"></div>
+  </div>
+</div>
+<div id="pg-fixture"   class="pg"></div>
+<div id="pg-ranking"   class="pg" style="display:none"></div>
+<div id="pg-cruces"    class="pg" style="display:none"></div>
+<div id="pg-parejas"   class="pg" style="display:none"></div>
+<div id="pg-jugadoras" class="pg" style="display:none"></div>
+<div id="pg-historial" class="pg" style="display:none"></div>
+<div id="pg-settings"  class="pg" style="display:none"></div>
+
+<script>
+
+window.onerror = function(msg, src, line, col, err) {
+  var body = document.body;
+  if(body) {
+    var div = document.createElement('div');
+    div.style.cssText = 'background:#FDECEA;color:#C0392B;padding:12px;font-size:12px;position:fixed;top:0;left:0;right:0;z-index:9999;font-family:monospace';
+    div.textContent = 'Error: ' + msg + ' (line ' + line + ')';
+    body.insertBefore(div, body.firstChild);
+  }
+  return false;
+};
+var EMOJI_CHARS=["&#127914;","&#127955;","&#11088;","&#128293;","&#9889;","&#128081;","&#128142;","&#10084;","&#127804;","&#9728;","&#127769;","&#128640;","&#129409;","&#128049;","&#128047;","&#129418;","&#128060;","&#128040;","&#128067;","&#129417;","&#129419;","&#127797;","&#127826;","&#127827;","&#127825;","&#129389;"];
+var DEF_AVATARS=[0,1,2,3,4,5,6,7,8,9];
+var avatars=DEF_AVATARS.slice();
+var torneos=[];
+var editingAvatarIdx=-1;
+// ── DEFAULTS ──────────────────────────────────────────────────────────────────
+var DEF_PLAYERS  = ["Caro","Maru","Vale","Ani","Flor","Jime","Ceci","Dani","Maga","Ale"];
+var DEF_POS      = ["D","D","R","R","B","R","R","D","D","D"];
+var DEF_COURTS   = 2;
+var DEF_HOURS    = 2.0;
+var HOUR_OPTIONS = [0.5,1.0,1.5,2.0,2.5,3.0];
+
+// Court colors
+var COURT_COLS = ["b","g","v","b2"];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+var players   = DEF_PLAYERS.slice();
+var positions = DEF_POS.slice();
+var courts    = DEF_COURTS;
+var hours     = DEF_HOURS;
+var activeMode = "random";
+var generatedRounds = [];  // [{courts:[[tA,tB],[tA,tB],...], resting:[idx,...]}, ...]
+var manualPairs = [];      // [[idx,idx], ...] one per "pair slot"
+var scores = [];           // [round][court] = {winner,sa,sb}
+var pairsMode = "random";
+
+// ── LOAD / SAVE ───────────────────────────────────────────────────────────────
+function loadState(){
+  try{
+    var sv=localStorage.getItem("padel_ani_v3")||localStorage.getItem("padel_ani_v2");
+    if(!sv) return;
+    var p=JSON.parse(sv);
+    if(p.players)   players=p.players;
+    if(p.positions) positions=p.positions;
+    if(p.avatars&&p.avatars.length===p.players.length) avatars=p.avatars;
+    else{ avatars=[];for(var i=0;i<(p.players||[]).length;i++)avatars.push(i%EMOJI_CHARS.length); }
+    if(p.courts)    courts=p.courts;
+    if(p.hours)     hours=p.hours;
+    if(p.activeMode) activeMode=p.activeMode;
+    if(p.generatedRounds) generatedRounds=p.generatedRounds;
+    if(p.manualPairs)     manualPairs=p.manualPairs;
+    if(p.scores)          scores=p.scores;
+    if(p.torneos)         torneos=p.torneos;
+  }catch(e){ console.log("loadState err",e); }
+}
+function save(){
+  try{
+    localStorage.setItem("padel_ani_v3", JSON.stringify({
+      players:players, positions:positions, avatars:avatars, courts:courts, hours:hours,
+      activeMode:activeMode, generatedRounds:generatedRounds,
+      manualPairs:manualPairs, scores:scores, torneos:torneos
+    }));
+  }catch(e){}
+}
+loadState();
+
+// ── SCHEDULE GENERATOR ────────────────────────────────────────────────────────
+function gcd(a,b){ return b===0?a:gcd(b,a%b); }
+
+function shuffle(arr){
+  for(var i=arr.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=arr[i];arr[i]=arr[j];arr[j]=t;
+  }
+}
+
+
+function seedRng(seed){
+  var s=seed|0;
+  return function(){
+    s+=0x6D2B79F5;var t=s;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+
+function generateSchedule(seed){
+  var N = players.length;
+  var C = courts;
+  var playingPR = Math.min(4*C, Math.floor(N/4)*4);
+  var actualC = playingPR>>2;
+  var restingPR = N - playingPR;
+  var g2 = gcd(N, playingPR);
+  var numRounds = N/g2;
+  var rng = seedRng(seed !== undefined ? seed : (Math.random()*99999|0));
+
+  function canD(i){ return positions[i]==="D"||positions[i]==="B"; }
+  function canR(i){ return positions[i]==="R"||positions[i]==="B"; }
+  function validPair(a,b){ return (canD(a)&&canR(b))||(canR(a)&&canD(b)); }
+
+  // Find all valid rest combos that keep enough D/R in playing group
+  var allIdxs=[]; for(var i=0;i<N;i++) allIdxs.push(i);
+  var validRests=[];
+
+  function combos(arr, k, start, current){
+    if(current.length===k){
+      var playing=arr.filter(function(x){return current.indexOf(x)<0;});
+      var d=0,r=0;
+      playing.forEach(function(i){if(canD(i))d++;if(canR(i))r++;});
+      if(d>=2*actualC&&r>=2*actualC) validRests.push(current.slice());
+      return;
+    }
+    for(var i=start;i<arr.length;i++){
+      current.push(arr[i]);
+      combos(arr,k,i+1,current);
+      current.pop();
+    }
+  }
+  combos(allIdxs, restingPR, 0, []);
+
+  // Shuffle valid rests
+  for(var i=validRests.length-1;i>0;i--){
+    var j=Math.floor(rng()*(i+1));
+    var t=validRests[i];validRests[i]=validRests[j];validRests[j]=t;
+  }
+
+  // Backtrack to find perfect rest schedule (each player rests equally)
+  var restPP = Math.round(numRounds*restingPR/N);
+  var restSchedule=[];
+  var restCounts=[];for(var i=0;i<N;i++) restCounts.push(0);
+
+  function backtrack(chosen, counts, start){
+    if(chosen.length===numRounds) return true;
+    for(var i=start;i<validRests.length;i++){
+      var rest=validRests[i];
+      var ok=true;
+      for(var k=0;k<rest.length;k++) if(counts[rest[k]]>=restPP){ok=false;break;}
+      if(!ok) continue;
+      for(var k=0;k<rest.length;k++) counts[rest[k]]++;
+      chosen.push(rest);
+      if(backtrack(chosen,counts,i+1)) return true;
+      chosen.pop();
+      for(var k=0;k<rest.length;k++) counts[rest[k]]--;
+    }
+    return false;
+  }
+  backtrack(restSchedule, restCounts, 0);
+  if(restSchedule.length<numRounds){
+    // fallback: use rotation
+    restSchedule=[];
+    for(var r=0;r<numRounds;r++){
+      var rest=[];
+      for(var k=0;k<restingPR;k++) rest.push(allIdxs[(r*restingPR+k)%N]);
+      restSchedule.push(rest);
+    }
+  }
+
+  // Build rounds with position-aware court assignment
+  var pc={};
+  function pk(a,b){return Math.min(a,b)+","+Math.max(a,b);}
+  function getPC(a,b){return pc[pk(a,b)]||0;}
+  function addPC(a,b){var k=pk(a,b);pc[k]=(pc[k]||0)+1;}
+
+  function bestPairing(g4){
+    var a=g4[0],b=g4[1],cc=g4[2],d=g4[3];
+    var opts=[[[a,b],[cc,d]],[[a,cc],[b,d]],[[a,d],[b,cc]],
+              [[b,a],[cc,d]],[[cc,a],[b,d]],[[d,a],[b,cc]]];
+    var best=null,bs=999999;
+    for(var i=0;i<opts.length;i++){
+      var p1=opts[i][0],p2=opts[i][1];
+      if(validPair(p1[0],p1[1])&&validPair(p2[0],p2[1])){
+        var s=(getPC(p1[0],p1[1])+1)*(getPC(p1[0],p1[1])+1)+(getPC(p2[0],p2[1])+1)*(getPC(p2[0],p2[1])+1);
+        if(s<bs){
+          bs=s;
+          var t1=canD(p1[0])?p1:[p1[1],p1[0]];
+          var t2=canD(p2[0])?p2:[p2[1],p2[0]];
+          best=[t1,t2];
+        }
+      }
+    }
+    return best;
+  }
+
+  var rounds=[];
+  for(var ri=0;ri<numRounds;ri++){
+    var resting=restSchedule[ri]||[];
+    var playing=allIdxs.filter(function(i){return resting.indexOf(i)<0;});
+    var bestCourts=null,bestScore=999999;
+
+    for(var attempt=0;attempt<5000;attempt++){
+      // shuffle playing
+      for(var i=playing.length-1;i>0;i--){
+        var j=Math.floor(rng()*(i+1));var t=playing[i];playing[i]=playing[j];playing[j]=t;
+      }
+      var ca=[],score=0,valid=true;
+      for(var ci=0;ci<actualC;ci++){
+        var g4=playing.slice(ci*4,ci*4+4);
+        var dcount=0,rcount=0;
+        for(var k=0;k<4;k++){if(canD(g4[k]))dcount++;if(canR(g4[k]))rcount++;}
+        if(dcount<2||rcount<2){valid=false;break;}
+        var p=bestPairing(g4);
+        if(!p){valid=false;break;}
+        ca.push(p);
+        score+=(getPC(p[0][0],p[0][1])+1)*(getPC(p[0][0],p[0][1])+1)+(getPC(p[1][0],p[1][1])+1)*(getPC(p[1][0],p[1][1])+1);
+      }
+      if(valid&&score<bestScore){bestScore=score;bestCourts=ca.map(function(c){return [c[0].slice(),c[1].slice()];});}
+      if(bestScore<=actualC*4) break;
+    }
+
+    if(!bestCourts){
+      // fallback without position constraint
+      var ca2=[];
+      for(var ci=0;ci<actualC;ci++){
+        var g4=playing.slice(ci*4,ci*4+4);
+        ca2.push([[g4[0],g4[1]],[g4[2],g4[3]]]);
+      }
+      bestCourts=ca2;
+    }
+
+    rounds.push({courts:bestCourts,resting:resting});
+    for(var ci=0;ci<bestCourts.length;ci++){
+      addPC(bestCourts[ci][0][0],bestCourts[ci][0][1]);
+      addPC(bestCourts[ci][1][0],bestCourts[ci][1][1]);
+    }
+  }
+  return rounds;
+}
+
+
+// ── DERIVED STATE ─────────────────────────────────────────────────────────────
+function getActiveRounds(){
+  if(activeMode==="manual") return buildManualRounds();
+  return generatedRounds;
+}
+
+function computeTimes(){
+  var rounds = getActiveRounds();
+  var numRounds = rounds.length;
+  var minPerRound = Math.round(hours*60/numRounds);
+  var startH=9, startM=30;
+  var times=[];
+  for(var i=0;i<numRounds;i++){
+    var totalMin = startH*60+startM + i*minPerRound;
+    var h=Math.floor(totalMin/60), m=totalMin%60;
+    times.push(h+":"+(m<10?"0"+m:m));
+  }
+  return {times:times, minPerRound:minPerRound};
+}
+
+function initScores(numRounds, numCourts){
+  var s=[];
+  for(var r=0;r<numRounds;r++){
+    var rc=[];
+    for(var c=0;c<numCourts;c++) rc.push({winner:0,sa:"",sb:""});
+    s.push(rc);
+  }
+  return s;
+}
+
+function ensureScores(){
+  var rounds=getActiveRounds();
+  if(!scores||scores.length!==rounds.length){
+    scores=initScores(rounds.length, rounds.length>0?rounds[0].courts.length:courts);
+    return;
+  }
+  rounds.forEach(function(r,ri){
+    if(!scores[ri]||scores[ri].length!==r.courts.length){
+      scores[ri]=[];
+      r.courts.forEach(function(){scores[ri].push({winner:0,sa:"",sb:""});});
+    }
+  });
+}
+
+function totalGames(){
+  var rounds=getActiveRounds();
+  var t=0;
+  rounds.forEach(function(r){t+=r.courts.length;});
+  return t;
+}
+
+function done(){
+  ensureScores();
+  var n=0;
+  scores.forEach(function(r){r.forEach(function(c){if(c&&c.winner!==0)n++;});});
+  return n;
+}
+
+// ── SCORE ACTIONS ─────────────────────────────────────────────────────────────
+function toggleWinner(ri,ci,w){
+  ensureScores();
+  scores[ri][ci].winner=scores[ri][ci].winner===w?0:w;
+  save();render();
+}
+function updateScore(ri,ci,side,val){
+  ensureScores();
+  if(side===0) scores[ri][ci].sa=val; else scores[ri][ci].sb=val;
+  var sa=parseInt(scores[ri][ci].sa), sb=parseInt(scores[ri][ci].sb);
+  if(!isNaN(sa)&&!isNaN(sb)&&sa!==sb) scores[ri][ci].winner=sa>sb?1:2;
+  save();renderRanking();renderCruces();
+}
+
+// ── RANKING ───────────────────────────────────────────────────────────────────
+function getRanking(){
+  ensureScores();
+  var rounds=getActiveRounds();
+  var st={};
+  players.forEach(function(p){st[p]={wins:0,played:0,rests:0,gf:0,gc:0};});
+  rounds.forEach(function(round,ri){
+    round.resting.forEach(function(idx){if(players[idx]&&st[players[idx]])st[players[idx]].rests++;});
+    round.courts.forEach(function(court,ci){
+      var tA=court[0],tB=court[1];
+      var sc=(scores[ri]&&scores[ri][ci])||{winner:0,sa:"",sb:""};
+      var res=sc.winner, sa=parseInt(sc.sa)||0, sb=parseInt(sc.sb)||0;
+      if(res!==0){
+        tA.forEach(function(idx){var p=players[idx];if(p&&st[p]){st[p].played++;st[p].gf+=sa;st[p].gc+=sb;}});
+        tB.forEach(function(idx){var p=players[idx];if(p&&st[p]){st[p].played++;st[p].gf+=sb;st[p].gc+=sa;}});
+      }
+      if(res===1) tA.forEach(function(idx){var p=players[idx];if(p&&st[p])st[p].wins++;});
+      if(res===2) tB.forEach(function(idx){var p=players[idx];if(p&&st[p])st[p].wins++;});
+    });
+  });
+  return players.map(function(p){
+    var s=st[p]||{wins:0,played:0,rests:0,gf:0,gc:0};
+    return {name:p,wins:s.wins,played:s.played,rests:s.rests,gf:s.gf,gc:s.gc,diff:s.gf-s.gc};
+  }).sort(function(a,b){return b.wins-a.wins||b.diff-a.diff||b.gf-a.gf;});
+}
+
+function getAvatar(idx){return EMOJI_CHARS[(avatars[idx]!==undefined?avatars[idx]:idx)%EMOJI_CHARS.length];}
+
+function openAvatarPicker(idx){
+  editingAvatarIdx=idx;
+  var grid=document.getElementById("emoji-grid");
+  if(!grid)return;
+  var h="";
+  EMOJI_CHARS.forEach(function(e,i){
+    h+='<button onclick="selectAvatar('+i+')" style="width:40px;height:40px;border-radius:10px;border:2px solid '+(avatars[idx]===i?"#2E75B6":"transparent")+';;font-size:22px;cursor:pointer;background:'+(avatars[idx]===i?"#D6E8FA":"#F8FAFC")+'">'+e+'</button>';
+  });
+  grid.innerHTML=h;
+  document.getElementById("modal-overlay").style.display="flex";
+}
+function selectAvatar(idx){
+  if(editingAvatarIdx>=0){avatars[editingAvatarIdx]=idx;save();renderJugadoras();}
+  closeModal();
+}
+function closeModal(){
+  var m=document.getElementById("modal-overlay");
+  if(m)m.style.display="none";
+}
+function shareFixture(){
+  var rounds=getActiveRounds(),tdata=computeTimes();
+  var lines=["Padel Ani - Fixture",""];
+  rounds.forEach(function(round,ri){
+    lines.push("Ronda "+(ri+1)+" ("+tdata.times[ri]+")");
+    round.courts.forEach(function(court,ci){
+      var tA=court[0].map(function(i){return players[i]||"?";});
+      var tB=court[1].map(function(i){return players[i]||"?";});
+      lines.push("  C"+(ci+1)+": "+tA.join("/")+' vs '+tB.join("/"));
+    });
+    if(round.resting.length)lines.push("  Desc: "+round.resting.map(function(i){return players[i]||"?";}).join(", "));
+    lines.push("");
+  });
+  window.open("https://wa.me/?text="+encodeURIComponent(lines.join("\n")),"_blank");
+}
+function saveTournament(){
+  var rank=getRanking();
+  var now=new Date();
+  var dateStr=now.getDate()+"/"+(now.getMonth()+1)+"/"+now.getFullYear();
+  torneos.unshift({date:dateStr,ranking:rank.map(function(r){return{name:r.name,wins:r.wins,played:r.played};})});
+  if(torneos.length>20)torneos=torneos.slice(0,20);
+  save();renderHistorial();alert("Torneo guardado!");
+}
+function renderHistorial(){
+  var el=document.getElementById("pg-historial");
+  if(!el)return;
+  if(torneos.length===0){el.innerHTML='<div class="empty"><p style="font-size:44px;margin-bottom:12px">&#128214;</p><p>No hay torneos guardados.<br>Cuando termines un torneo, guardalo desde <strong>Ranking</strong>.</p></div>';return;}
+  var h='<div class="section-card"><div class="section-hdr">Torneos ('+torneos.length+')</div>';
+  torneos.forEach(function(t){
+    h+='<div class="hist-row"><div class="hist-date">'+t.date+'</div><div>';
+    t.ranking.slice(0,3).forEach(function(p,pi){
+      h+='<span class="hist-badge hist-'+(pi+1)+'">'+(pi+1)+'&#176; '+p.name+' ('+p.wins+'v)</span>';
+    });
+    h+='</div></div>';
+  });
+  h+='</div><button class="reset-btn" onclick="clearHistory()">Borrar historial</button>';
+  el.innerHTML=h;
+}
+function clearHistory(){if(!confirm("Borrar todo el historial?"))return;torneos=[];save();renderHistorial();}
+function computeCumStats(){
+  if(torneos.length===0)return[];
+  var stats={};
+  players.forEach(function(p,i){stats[p]={idx:i,name:p,wins:0,losses:0,played:0};});
+  torneos.forEach(function(t){t.ranking.forEach(function(r){if(stats[r.name]){stats[r.name].wins+=r.wins;stats[r.name].played+=r.played;stats[r.name].losses+=(r.played-r.wins);}});});
+  return players.map(function(p,i){
+    var s=stats[p]||{idx:i,name:p,wins:0,losses:0,played:0};
+    s.pct=s.played>0?Math.round(s.wins/s.played*100):0;return s;
+  }).sort(function(a,b){return b.wins-a.wins;});
+}
+
+function posStyle(p){return p==="D"?"background:#D6E8FA;color:#2E75B6":p==="R"?"background:#D5F0E0;color:#276836":"background:#EDE0FF;color:#7B3FA0";}
+function playerTag(idx){
+  var name=players[idx]||"?",p=positions[idx]||"D",lbl=p==="D"?"D":p==="R"?"R":"D+R";
+  return name+'<span style="font-size:9px;font-weight:700;padding:1px 4px;border-radius:5px;margin-left:3px;'+posStyle(p)+'">'+lbl+'</span>';
+}
+function posLabel(idx){
+  var p=positions[idx]||"D";
+  return p==="D"?"Drive":p==="R"?"Reves":"D+R";
+}
+
+// ── RENDER FIXTURE ────────────────────────────────────────────────────────────
+function renderFixture(){
+  ensureScores();
+  var rounds=getActiveRounds();
+  if(rounds.length===0){
+    document.getElementById("pg-fixture").innerHTML='<div class="empty"><p style="font-size:32px;margin-bottom:10px">&#9881;</p><p>Configura el fixture en <strong>Ajustes</strong></p></div>';
+    return;
+  }
+  var d=done(), total=totalGames(), pct=total>0?Math.round(d/total*100):0;
+  var tdata=computeTimes();
+  var modeTag=" ["+(activeMode==="random"?"Random":"Manual")+"]";
+  var h='<div class="prog-wrap"><div class="prog-lbl"><span>Partidos'+modeTag+'</span><span>'+d+' / '+total+'</span></div>'
+    +'<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div></div>';
+  rounds.forEach(function(round,ri){
+    var restTags=round.resting.map(function(i){return playerTag(i);});
+    h+='<div class="card">'
+      +'<div class="rhdr"><span class="rnum">Ronda '+(ri+1)+'</span>'
+      +'<span class="rtime">'+tdata.times[ri]+'</span>'
+      +(restTags.length?'<span class="rbadge">Desc: '+round.resting.map(function(i){return players[i]||"?";}).join(" / ")+'</span>':"")
+      +'</div>';
+    round.courts.forEach(function(court,ci){
+      h+=makeCourt(ri,ci,court[0],court[1],ci);
+    });
+    h+='</div>';
+  });
+  h+='<button class="share-btn" onclick="shareFixture()"><span>&#128172;</span> Compartir por WhatsApp</button>';
+  h+='<button class="reset-btn" onclick="resetScores()">Reiniciar resultados</button>';
+  document.getElementById("pg-fixture").innerHTML=h;
+  updateHeader();
+}
+
+function makeCourt(ri,ci,tAIdx,tBIdx,courtNum){
+  var sc=(scores[ri]&&scores[ri][ci])||{winner:0,sa:"",sb:""};
+  var res=sc.winner, aW=res===1, bW=res===2;
+  var cols=["b","g","v","b"];
+  var col=cols[courtNum%3];
+  var aClass="team"+(aW?" w"+col:"");
+  var bClass="team"+(bW?" w"+col:"");
+  var aBtnClass="sbtn"+(aW?" a"+col:"");
+  var bBtnClass="sbtn"+(bW?" a"+col:"");
+  var stxt=res===0?"vs":res===1?"A":"B";
+  var tANames=tAIdx.map(function(i){return getAvatar(i)+" "+(players[i]||"?");});
+  var tBNames=tBIdx.map(function(i){return getAvatar(i)+" "+(players[i]||"?");});
+  var aW2=aW?'<span class="wbadge '+col+'">Gano</span>':"";
+  var bW2=bW?'<span class="wbadge '+col+'">Gano</span>':"";
+  var oca="updateScore("+ri+","+ci+",0,this.value)";
+  var ocb="updateScore("+ri+","+ci+",1,this.value)";
+  return '<div class="court'+(courtNum===0?" sep":"")+'"><div class="clbl '+col+'">Cancha '+(courtNum+1)+'</div>'
+    +'<div class="mrow">'
+    +'<div class="'+aClass+'">'+tANames[0]+'<br>'+tANames[1]+aW2+'</div>'
+    +'<div class="sarea">'
+    +'<button class="'+aBtnClass+'" onclick="toggleWinner('+ri+','+ci+',1)">A</button>'
+    +'<span class="stxt">'+stxt+'</span>'
+    +'<button class="'+bBtnClass+'" onclick="toggleWinner('+ri+','+ci+',2)">B</button>'
+    +'</div>'
+    +'<div class="'+bClass+'">'+tBNames[0]+'<br>'+tBNames[1]+bW2+'</div>'
+    +'</div>'
+    +'<div class="score-row">'
+    +'<div class="score-lbl">'+tANames.join(" / ")+'</div>'
+    +'<input class="score-inp" type="number" min="0" max="99" inputmode="numeric" placeholder="-" value="'+sc.sa+'" onchange="'+oca+'" oninput="'+oca+'">'
+    +'<span class="score-dash">-</span>'
+    +'<input class="score-inp" type="number" min="0" max="99" inputmode="numeric" placeholder="-" value="'+sc.sb+'" onchange="'+ocb+'" oninput="'+ocb+'">'
+    +'<div class="score-lbl">'+tBNames.join(" / ")+'</div>'
+    +'</div></div>';
+}
+
+// ── RENDER RANKING ────────────────────────────────────────────────────────────
+function renderRanking(){
+  var d=done(), total=totalGames(), el=document.getElementById("pg-ranking");
+  if(d===0||total===0){el.innerHTML='<div class="empty"><p style="font-size:44px;margin-bottom:10px">&#127942;</p><p>Carga resultados en <strong>Fixture</strong></p></div>';return;}
+  var rank=getRanking(), maxW=rank.reduce(function(m,r){return Math.max(m,r.wins);},1);
+  var h="";
+  if(d===total&&rank.length>=3){
+    var top3=rank.slice(0,3);
+    h+='<div class="podio-wrap">'
+      +'<div style="background:linear-gradient(135deg,#1A3A5C,#2E75B6);padding:16px 8px 0;text-align:center">'
+      +'<div style="color:rgba(255,255,255,.7);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Podio Final</div>'
+      +'<div style="display:flex;align-items:flex-end;justify-content:center">';
+    [[1,0,'2px solid #C0C0C0',20],[0,0,'3px solid #FFD700',0],[2,0,'2px solid #CD7F32',32]].forEach(function(oi){
+      var p=top3[oi[0]];if(!p)return;
+      var pidx=players.indexOf(p.name);
+      var medals=["&#129351;","&#129352;","&#129353;"];
+      h+='<div style="flex:1;text-align:center;padding-top:'+oi[3]+'px">'
+        +'<div style="width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 4px;border:'+oi[2]+'">'+getAvatar(pidx>=0?pidx:0)+'</div>'
+        +'<div style="font-size:12px;font-weight:700;color:#fff;line-height:1.2">'+p.name+'</div>'
+        +'<div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:2px">'+p.wins+' vic</div>'
+        +'<div style="padding:8px 4px;font-size:'+(oi[0]===0?'26':'20')+'px">'+medals[oi[0]]+'</div>'
+        +'</div>';
+    });
+    h+='</div></div></div>';
+  } else if(d===total&&rank.length>0){
+    h+='<div class="champ"><div style="font-size:44px">&#127942;</div>'
+      +'<div style="font-size:13px;font-weight:700;color:#7A4800">Campeona!</div>'
+      +'<div style="font-size:26px;font-weight:800;color:#1A2733">'+rank[0].name+'</div>'
+      +'<div style="font-size:12px;color:#7A4800;margin-top:3px">'+rank[0].wins+' victorias</div></div>';
+  }
+  h+='<div class="rank-card"><div class="rank-hdr">Ranking - '+d+' / '+total+' partidos</div>';
+  rank.forEach(function(p,i){
+    var bc=i===0?"b1":i===1?"b2":i===2?"b3":"bx";
+    var pct=Math.round(p.wins/maxW*100);
+    var losses=p.played-p.wins;
+    var diffStr=(p.diff>0?"+":"")+p.diff;
+    var pidx=players.indexOf(p.name);
+    h+='<div class="rank-row">'
+      +'<div class="bubble '+bc+'">'+(i+1)+'</div>'
+      +'<div class="rinfo"><div class="rname">'+p.name+'</div>'
+      +'<div class="rsub">'+(pidx>=0?posLabel(pidx):"?")+' - '+p.rests+' desc.</div>'
+      +'<div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap">'
+      +'<span style="font-size:10px;font-weight:700;background:#D5F0E0;color:#276836;padding:2px 7px;border-radius:8px">V: '+p.wins+'</span>'
+      +'<span style="font-size:10px;font-weight:700;background:#FDECEA;color:#C0392B;padding:2px 7px;border-radius:8px">D: '+losses+'</span>'
+      +(p.played>0?'<span style="font-size:10px;font-weight:700;background:#EBF3FB;color:#2E75B6;padding:2px 7px;border-radius:8px">'+p.gf+':'+p.gc+' ('+diffStr+')</span>':"")
+      +'</div>'
+      +'<div class="rbar"><div class="rbar-fill" style="width:'+pct+'%"></div></div></div>'
+      +'<div class="rwins"><div class="rnum-big">'+p.wins+'</div><div class="rlbl">vic'+(p.wins!==1?"s":"")+'</div></div>'
+      +'</div>';
+  });
+  h+="</div>";
+  if(d===total)h+='<button class="apply-btn" style="background:#E67E22;margin-top:8px" onclick="saveTournament()">Guardar en historial</button>';
+  el.innerHTML=h;
+}
+
+// ── RENDER CRUCES ─────────────────────────────────────────────────────────────
+function renderCruces(){
+  ensureScores();
+  var rounds=getActiveRounds();
+  if(rounds.length===0){document.getElementById("pg-cruces").innerHTML='<div class="empty"><p>Configura el fixture en <strong>Ajustes</strong></p></div>';return;}
+  var tdata=computeTimes();
+  var cols=["b","g","v"];
+  var h='<div class="cruces-card"><div class="cruces-hdr">Programa de partidos</div>';
+  rounds.forEach(function(round,ri){
+    var sc=(scores[ri])||[];
+    var restTags=round.resting.map(function(i){return playerTag(i);});
+    h+='<div class="cruce-row"><div class="cruce-round">Ronda '+(ri+1)+' - '+tdata.times[ri]+'</div>';
+    round.courts.forEach(function(court,ci){
+      var s=(sc[ci])||{sa:"",sb:""};
+      var rtxt=(s.sa&&s.sb)?s.sa+"-"+s.sb:"";
+      var col=cols[ci%3];
+      var tATags=court[0].map(function(i){return playerTag(i);});
+      var tBTags=court[1].map(function(i){return playerTag(i);});
+      h+='<div class="cruce-match"><span class="cruce-court '+col+'">C'+(ci+1)+'</span>'
+        +'<span class="cruce-teams">'+tATags.join(" / ")+' <span style="color:#aaa">vs</span> '+tBTags.join(" / ")+'</span>'
+        +(rtxt?'<span class="cruce-result '+col+'">'+rtxt+'</span>':"")+'</div>';
+    });
+    if(restTags.length) h+='<div class="cruce-rest" style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span style="font-weight:700;margin-right:2px">Desc:</span>'+restTags.join("&nbsp;&nbsp;")+'</div>';
+    h+='</div>';
+  });
+  h+="</div>";
+  document.getElementById("pg-cruces").innerHTML=h;
+}
+
+// ── RENDER PAREJAS ────────────────────────────────────────────────────────────
+function renderParejas(){
+  var btnR=pairsMode==="random"?"on":"";
+  var btnM=pairsMode==="manual"?"on":"";
+  var h='<div class="mode-toggle">'
+    +'<button class="mode-btn '+btnR+'" onclick="setPairsMode(0)">Random</button>'
+    +'<button class="mode-btn '+btnM+'" onclick="setPairsMode(1)">Manual</button>'
+    +'</div>';
+  if(pairsMode==="random"){
+    h+='<div class="ok-box">Fixture generado automaticamente. Todas juegan igual, descansan igual, sin parejas repetidas.</div>';
+    h+='<button class="apply-btn blue" style="margin-bottom:11px" onclick="doShuffle()">Mezclar de nuevo</button>';
+    // show current random fixture summary
+    var rounds=generatedRounds;
+    if(rounds.length>0){
+      var tdata=computeTimes();
+      h+='<div class="section-card"><div class="section-hdr">Fixture actual</div>';
+      rounds.forEach(function(r,ri){
+        h+='<div style="padding:9px 14px;border-bottom:'+(ri<rounds.length-1?"1px solid #EEF2F7":"none")+'">'
+          +'<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#6B7A8D;margin-bottom:5px">Ronda '+(ri+1)+' - '+tdata.times[ri]+'</div>';
+        r.courts.forEach(function(court,ci){
+          var cols=["b","g","v"];
+          var col=cols[ci%3];
+          var tAN=court[0].map(function(i){return players[i]||"?";});
+          var tBN=court[1].map(function(i){return players[i]||"?";});
+          h+='<div style="font-size:12px;margin-bottom:2px">'
+            +'<span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:5px;margin-right:4px;'
+            +(col==="b"?"background:#D6E8FA;color:#2E75B6":col==="g"?"background:#D5F0E0;color:#276836":"background:#EDE0FF;color:#7B3FA0")
+            +'">C'+(ci+1)+'</span>'
+            +tAN.join("/")+' vs '+tBN.join("/")+'</div>';
+        });
+        if(r.resting.length>0){
+          var rn=r.resting.map(function(i){return players[i]||"?";}).join(", ");
+          h+='<span style="font-size:10px;color:#8B5E00;background:#FFF2CC;padding:1px 6px;border-radius:8px">Desc: '+rn+'</span>';
+        }
+        h+='</div>';
+      });
+      h+='</div>';
+    }
+    if(activeMode!=="random"){
+      h+='<button class="apply-btn" onclick="applyMode(0)">Usar este fixture</button>';
+    } else {
+      h+='<div class="ok-box" style="margin-top:4px">Este es el modo activo.</div>';
+    }
+  } else {
+    // Manual: define N/2 pairs (or floor(N/2))
+    var numPairs = Math.floor(players.length/2);
+    // Ensure manualPairs has right size
+    while(manualPairs.length < numPairs) manualPairs.push([manualPairs.length*2, manualPairs.length*2+1]);
+    while(manualPairs.length > numPairs) manualPairs.pop();
+    h+='<div class="info-box">Arma las '+numPairs+' parejas fijas. Yo calculo los cruces automaticamente para que cada pareja juegue y descanse la misma cantidad de veces.</div>';
+    h+='<div class="section-card"><div class="section-hdr">Las '+numPairs+' parejas</div>';
+    for(var pi=0;pi<numPairs;pi++){
+      var p0=manualPairs[pi]?manualPairs[pi][0]:pi*2;
+      var p1=manualPairs[pi]?manualPairs[pi][1]:pi*2+1;
+      h+='<div class="pair-row-m">'
+        +'<div class="pair-num">'+(pi+1)+'</div>'
+        +mkPairSel(pi,0,p0)
+        +'<span style="font-size:14px;color:#aaa;font-weight:700">+</span>'
+        +mkPairSel(pi,1,p1)
+        +'</div>';
+    }
+    h+='</div>';
+    h+='<button class="apply-btn" onclick="applyManual()">Aplicar al fixture</button>';
+  }
+  document.getElementById("pg-parejas").innerHTML=h;
+}
+
+function mkPairSel(pi,slot,selected){
+  var opts='<option value="-1">-</option>';
+  players.forEach(function(p,i){opts+='<option value="'+i+'"'+(i===selected?" selected":"")+'>'+p+'</option>';});
+  return '<select class="pair-sel" onchange="updatePair('+pi+','+slot+',this.value)">'+opts+'</select>';
+}
+function updatePair(pi,slot,val){
+  if(!manualPairs[pi]) manualPairs[pi]=[0,1];
+  manualPairs[pi][slot]=parseInt(val);
+  save();
+}
+function setPairsMode(m){pairsMode=m===0?"random":"manual";renderParejas();}
+function applyMode(m){activeMode=m===0?"random":"manual";save();render();}
+function applyManual(){
+  var used={};
+  for(var pi=0;pi<manualPairs.length;pi++){
+    for(var s=0;s<2;s++){
+      var idx=manualPairs[pi][s];
+      if(idx<0||idx>=players.length){alert("Faltan jugadoras en pareja "+(pi+1));return;}
+      if(used[idx]){alert("La jugadora "+players[idx]+" aparece mas de una vez");return;}
+      used[idx]=true;
+    }
+  }
+  activeMode="manual";
+  scores=[];
+  save();render();showTab("fixture");
+}
+function doShuffle(){
+  generatedRounds=generateSchedule(Math.random()*99999|0);
+  scores=[];
+  activeMode="random";
+  save();render();
+}
+
+// ── RENDER JUGADORAS ──────────────────────────────────────────────────────────
+function renderJugadoras(){
+  var h='<div class="section-card"><div class="section-hdr">Jugadoras ('+players.length+')</div>';
+  players.forEach(function(p,i){
+    var pos=positions[i]||"D";
+    var dOn=pos==="D"?"on-d":"", rOn=pos==="R"?"on-r":"", aOn=pos==="B"?"on-a":"";
+    h+='<div class="player-row">'
+      +'<button style="width:30px;height:30px;border-radius:50%;background:#E8EDF2;border:none;font-size:15px;cursor:pointer" onclick="openAvatarPicker('+i+')">'+getAvatar(i)+'</button>'
+      +'<input class="player-name-inp" type="text" value="'+p+'" maxlength="12" onchange="renamePlayer('+i+',this.value)" oninput="renamePlayer('+i+',this.value)">'
+      +'<div class="pos-toggle">'
+      +'<button class="pos-btn '+dOn+'" onclick="setPosP('+i+',0)">D</button>'
+      +'<button class="pos-btn '+rOn+'" onclick="setPosP('+i+',1)">R</button>'
+      +'<button class="pos-btn '+aOn+'" onclick="setPosP('+i+',2)">D+R</button>'
+      +'</div>'
+      +'<button class="del-btn" onclick="delPlayer('+i+')">x</button>'
+      +'</div>';
+  });
+  h+='</div>';
+  h+='<div class="section-card" style="overflow:visible"><div class="section-hdr">Agregar jugadora</div>'
+    +'<div class="add-player-row">'
+    +'<input class="add-inp" type="text" id="new-player-inp" placeholder="Nombre..." maxlength="12">'
+    +'<button class="add-btn" onclick="addPlayer()">Agregar</button>'
+    +'</div></div>';
+  var cumStats=computeCumStats();
+  if(cumStats.length>0){
+    h+='<div class="section-card"><div class="section-hdr">Estadisticas acumuladas</div>';
+    cumStats.forEach(function(p){
+      h+='<div class="stat-row"><div style="font-size:24px;flex-shrink:0">'+getAvatar(p.idx)+'</div>'
+        +'<div style="flex:1"><div style="font-size:14px;font-weight:600">'+p.name+'</div>'
+        +'<div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap">'
+        +'<span class="pill pill-v">'+p.wins+' vic</span>'
+        +'<span class="pill pill-d">'+p.losses+' der</span>'
+        +'<span class="pill pill-s">'+p.played+' part</span>'
+        +'</div></div>'
+        +'<div style="font-size:20px;font-weight:800;color:#1A3A5C">'+p.pct+'%</div>'
+        +'</div>';
+    });
+    h+='</div>';
+  }
+  h+='<button class="reset-btn" onclick="resetPlayers()">Restaurar jugadoras originales</button>';
+  document.getElementById("pg-jugadoras").innerHTML=h;
+}
+function renamePlayer(i,val){
+  val=val.trim();
+  if(val.length>0){players[i]=val;save();renderRanking();renderCruces();}
+}
+function setPosP(i,code){
+  positions[i]=code===0?"D":code===1?"R":"B";
+  save();renderJugadoras();
+}
+function delPlayer(i){
+  if(players.length<=4){alert("Minimo 4 jugadoras.");return;}
+  if(!confirm("Eliminar a "+players[i]+"?")) return;
+  players.splice(i,1);positions.splice(i,1);avatars.splice(i,1);
+  // rebuild manual pairs removing references to this index
+  manualPairs=manualPairs.filter(function(p){return p[0]!==i&&p[1]!==i;});
+  manualPairs=manualPairs.map(function(p){return [p[0]>i?p[0]-1:p[0], p[1]>i?p[1]-1:p[1]];});
+  generatedRounds=generateSchedule(42);
+  scores=[];
+  save();render();
+}
+function addPlayer(){
+  var inp=document.getElementById("new-player-inp");
+  var name=(inp?inp.value.trim():"");
+  if(!name){alert("Ingresa un nombre.");return;}
+  if(players.length>=16){alert("Maximo 16 jugadoras.");return;}
+  players.push(name);positions.push("D");avatars.push(players.length%EMOJI_CHARS.length);
+  generatedRounds=generateSchedule(42);
+  scores=[];
+  save();render();
+}
+function resetPlayers(){
+  if(!confirm("Restaurar jugadoras originales?")) return;
+  players=DEF_PLAYERS.slice();positions=DEF_POS.slice();avatars=DEF_AVATARS.slice();
+  manualPairs=[];generatedRounds=generateSchedule(42);scores=[];
+  save();render();
+}
+
+// ── RENDER SETTINGS ───────────────────────────────────────────────────────────
+function renderSettings(){
+  var rounds=generatedRounds;
+  var numRounds=rounds.length||0;
+  var playPerPlayer=numRounds>0?(numRounds-(numRounds*Math.max(0,players.length-4*courts)/players.length)):"?";
+
+  // compute schedule preview
+  var N=players.length, C=courts;
+  var playingPR=Math.min(4*C,Math.floor(N/4)*4);
+  var restingPR=N-playingPR;
+  var g2=gcd(N,playingPR);
+  var nr=N/g2;
+  var playPP=nr*playingPR/N;
+  var restPP=nr*restingPR/N;
+  var mpr=Math.round(hours*60/nr);
+
+  var h='<div class="section-card"><div class="section-hdr">Configuracion</div>'
+    // Courts
+    +'<div class="setting-row"><div class="setting-label">'
+    +'<div class="setting-title">Canchas</div>'
+    +'<div class="setting-sub">Canchas disponibles</div>'
+    +'</div><div class="stepper">'
+    +'<button class="step-btn" onclick="changeCourts(-1)">-</button>'
+    +'<span class="step-val" id="val-courts">'+courts+'</span>'
+    +'<button class="step-btn" onclick="changeCourts(1)">+</button>'
+    +'</div></div>'
+    // Hours
+    +'<div class="setting-row"><div class="setting-label">'
+    +'<div class="setting-title">Duracion</div>'
+    +'<div class="setting-sub">Tiempo disponible</div>'
+    +'</div><select class="time-sel" id="sel-hours" onchange="changeHours(this.value)">';
+  HOUR_OPTIONS.forEach(function(h2){
+    h+='<option value="'+h2+'"'+(h2===hours?" selected":"")+'>'+h2+'h</option>';
+  });
+  h+='</select></div>'
+    // Players count (read-only, managed in Jugadoras)
+    +'<div class="setting-row"><div class="setting-label">'
+    +'<div class="setting-title">Jugadoras</div>'
+    +'<div class="setting-sub">Gestion en solapa Jugadoras</div>'
+    +'</div><span class="step-val">'+players.length+'</span></div>'
+    +'</div>';
+
+  // Schedule preview
+  h+='<div class="section-card"><div class="section-hdr">Resumen del fixture</div>'
+    +'<div class="schedule-preview">'
+    +'<b>'+players.length+'</b> jugadoras, <b>'+courts+'</b> cancha'+(courts>1?"s":"")+', <b>'+hours+'h</b><br>'
+    +'<b>'+nr+'</b> rondas de <b>'+mpr+'</b> min cada una<br>'
+    +'<b>'+playPP+'</b> partidos por jugadora<br>'
+    +'<b>'+restPP+'</b> descanso'+(restPP!==1?"s":"")+" por jugadora"
+    +'</div></div>';
+
+  h+='<button class="apply-btn green" onclick="applySettings()">Generar fixture nuevo</button>';
+  h+='<div style="height:8px"></div>';
+  h+='<button class="reset-btn" onclick="resetAll()">Reiniciar resultados</button>';
+  document.getElementById("pg-settings").innerHTML=h;
+}
+function changeCourts(delta){
+  var newC=courts+delta;
+  var maxC=Math.floor(players.length/4);
+  if(newC<1||newC>Math.min(3,maxC)) return;
+  courts=newC;
+  save();renderSettings();
+}
+function changeHours(val){
+  hours=parseFloat(val);
+  save();renderSettings();
+}
+function applySettings(){
+  generatedRounds=generateSchedule(Math.random()*99999|0);
+  scores=[];
+  activeMode="random";
+  save();render();showTab("fixture");
+}
+
+// ── HEADER ────────────────────────────────────────────────────────────────────
+function updateHeader(){
+  var rounds=getActiveRounds();
+  if(rounds.length===0){document.getElementById("hdr-sub").textContent="Configura en Ajustes";return;}
+  var tdata=computeTimes();
+  var N=players.length, C=rounds[0].courts.length;
+  document.getElementById("hdr-sub").textContent=
+    N+" jugadoras - "+C+" cancha"+(C>1?"s":"")+" - "+rounds.length+" rondas - "+tdata.minPerRound+"min c/u";
+}
+
+// ── GLOBAL ────────────────────────────────────────────────────────────────────
+function render(){
+  renderFixture();renderRanking();renderCruces();
+  renderParejas();renderJugadoras();renderSettings();
+}
+function showTab(t){
+  ["fixture","ranking","cruces","parejas","jugadoras","settings"].forEach(function(id){
+    document.getElementById("pg-"+id).style.display=t===id?"block":"none";
+  });
+  ["fix","rank","cruz","par","jug","set"].forEach(function(id,i){
+    var tabs=["fixture","ranking","cruces","parejas","jugadoras","settings"];
+    document.getElementById("t-"+id).className="tab"+(t===tabs[i]?" on":"");
+  });
+}
+function resetScores(){
+  if(!confirm("Reiniciar todos los resultados?")) return;
+  scores=[];save();render();
+}
+function resetAll(){
+  if(!confirm("Reiniciar resultados?")) return;
+  scores=[];save();render();
+}
+
+// Initialize: generate rounds if none exist
+try {
+  if(!generatedRounds||generatedRounds.length===0){
+    generatedRounds=generateSchedule(42);
+  }
+  render();
+} catch(initErr) {
+  var errEl = document.getElementById('pg-fixture');
+  if(errEl) errEl.innerHTML = '<div style="padding:20px;font-family:-apple-system,sans-serif">'
+    + '<h2 style="color:#C0392B;margin-bottom:12px">Error al iniciar</h2>'
+    + '<p style="font-size:13px;color:#555;margin-bottom:8px">' + initErr.message + '</p>'
+    + '<button onclick="localStorage.clear();location.reload()" style="padding:12px 20px;background:#1A3A5C;color:white;border:none;border-radius:10px;font-size:14px;-webkit-appearance:none">Reiniciar app</button>'
+    + '</div>';
+}
+
+// Register Service Worker for PWA
+if('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').then(function(reg) {
+      console.log('SW registered:', reg.scope);
+    }).catch(function(err) {
+      console.log('SW registration failed:', err);
+    });
+  });
+}
+</script>
+</body>
+</html>
