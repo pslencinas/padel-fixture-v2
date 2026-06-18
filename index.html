@@ -2,12 +2,6 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1A3A5C">
-<meta name="mobile-web-app-capable" content="yes">
-<link rel="apple-touch-icon" href="icon-192.png">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -221,7 +215,15 @@ function loadState(){
     if(p.courts)    courts=p.courts;
     if(p.hours)     hours=p.hours;
     if(p.activeMode) activeMode=p.activeMode;
-    if(p.generatedRounds) generatedRounds=p.generatedRounds;
+    if(p.generatedRounds && p.generatedRounds.length > 0) {
+      // Validate format: rounds must have courts as arrays of index arrays
+      var valid = true;
+      try {
+        var r0 = p.generatedRounds[0];
+        if(!r0.courts || !Array.isArray(r0.courts) || !Array.isArray(r0.courts[0])) valid = false;
+      } catch(e) { valid = false; }
+      if(valid) generatedRounds = p.generatedRounds;
+    }
     if(p.manualPairs)     manualPairs=p.manualPairs;
     if(p.scores)          scores=p.scores;
     if(p.torneos)         torneos=p.torneos;
@@ -498,7 +500,7 @@ function getRanking(){
   }).sort(function(a,b){return b.wins-a.wins||b.diff-a.diff||b.gf-a.gf;});
 }
 
-function getAvatar(idx){return EMOJI_CHARS[(avatars[idx]!==undefined?avatars[idx]:idx)%EMOJI_CHARS.length];}
+function getAvatar(idx){idx=resolveIdx(idx);return EMOJI_CHARS[(avatars[idx]!==undefined?avatars[idx]:idx)%EMOJI_CHARS.length];}
 
 function openAvatarPicker(idx){
   editingAvatarIdx=idx;
@@ -570,7 +572,14 @@ function computeCumStats(){
 }
 
 function posStyle(p){return p==="D"?"background:#D6E8FA;color:#2E75B6":p==="R"?"background:#D5F0E0;color:#276836":"background:#EDE0FF;color:#7B3FA0";}
+function resolveIdx(v){
+  // v can be a player index (number) or player name (string, from old data)
+  if(typeof v === "number") return v;
+  var i = players.indexOf(v);
+  return i >= 0 ? i : 0;
+}
 function playerTag(idx){
+  idx = resolveIdx(idx);
   var name=players[idx]||"?",p=positions[idx]||"D",lbl=p==="D"?"D":p==="R"?"R":"D+R";
   return name+'<span style="font-size:9px;font-weight:700;padding:1px 4px;border-radius:5px;margin-left:3px;'+posStyle(p)+'">'+lbl+'</span>';
 }
@@ -1027,17 +1036,6 @@ try {
     + '<p style="font-size:13px;color:#555;margin-bottom:8px">' + initErr.message + '</p>'
     + '<button onclick="localStorage.clear();location.reload()" style="padding:12px 20px;background:#1A3A5C;color:white;border:none;border-radius:10px;font-size:14px;-webkit-appearance:none">Reiniciar app</button>'
     + '</div>';
-}
-
-// Register Service Worker for PWA
-if('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('sw.js').then(function(reg) {
-      console.log('SW registered:', reg.scope);
-    }).catch(function(err) {
-      console.log('SW registration failed:', err);
-    });
-  });
 }
 </script>
 </body>
