@@ -266,7 +266,8 @@ function generateSchedule(seed){
   var actualC = playingPR>>2;
   var restingPR = N - playingPR;
   var g2 = gcd(N, playingPR);
-  var numRounds = N/g2;
+  // When everyone plays (restingPR==0), run 4 rounds for variety
+  var numRounds = restingPR===0 ? 4 : N/g2;
   var rng = seedRng(seed !== undefined ? seed : (Math.random()*99999|0));
 
   function canD(i){ return positions[i]==="D"||positions[i]==="B"; }
@@ -291,7 +292,7 @@ function generateSchedule(seed){
       current.pop();
     }
   }
-  combos(allIdxs, restingPR, 0, []);
+  if(restingPR > 0) combos(allIdxs, restingPR, 0, []);
 
   // Shuffle valid rests
   for(var i=validRests.length-1;i>0;i--){
@@ -319,14 +320,18 @@ function generateSchedule(seed){
     }
     return false;
   }
-  backtrack(restSchedule, restCounts, 0);
-  if(restSchedule.length<numRounds){
-    // fallback: use rotation
-    restSchedule=[];
-    for(var r=0;r<numRounds;r++){
-      var rest=[];
-      for(var k=0;k<restingPR;k++) rest.push(allIdxs[(r*restingPR+k)%N]);
-      restSchedule.push(rest);
+  if(restingPR===0){
+    // Everyone plays - no rest needed
+    for(var r=0;r<numRounds;r++) restSchedule.push([]);
+  } else {
+    backtrack(restSchedule, restCounts, 0);
+    if(restSchedule.length<numRounds){
+      restSchedule=[];
+      for(var r=0;r<numRounds;r++){
+        var rest=[];
+        for(var k=0;k<restingPR;k++) rest.push(allIdxs[(r*restingPR+k)%N]);
+        restSchedule.push(rest);
+      }
     }
   }
 
@@ -927,7 +932,7 @@ function renderSettings(){
   var playingPR=Math.min(4*C,Math.floor(N/4)*4);
   var restingPR=N-playingPR;
   var g2=gcd(N,playingPR);
-  var nr=N/g2;
+  var nr=restingPR===0?4:N/g2;
   var playPP=nr*playingPR/N;
   var restPP=nr*restingPR/N;
   var mpr=Math.round(hours*60/nr);
